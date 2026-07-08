@@ -4,29 +4,23 @@
   </div>
   <div class="product-grid">
     {%- assign collection = collections[section.settings.collection] -%}
-    {%- if collection != blank and collection.products_count > 0 -%}
-      {%- for product in collection.products limit: 4 -%}
-        <div class="product-card">
-          <a href="{{ product.url }}">
-            {%- if product.featured_image != blank -%}
-              <img class="product-image" src="{{ product.featured_image | img_url: '400x400', crop: 'center' }}" alt="{{ product.title | escape }}">
-            {%- else -%}
-              <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="{{ product.title | escape }}">
-            {%- endif -%}
-            <h3 class="product-title">{{ product.title }}</h3>
-            <div class="product-price">{{ product.price | money }}</div>
-          </a>
-        </div>
-      {%- endfor -%}
-    {%- else -%}
-      {%- for i in (1..4) -%}
-        <div class="product-card">
-          <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="Product Image">
-          <h3 class="product-title">Neon Sync Jacket</h3>
-          <div class="product-price">$249.00</div>
-        </div>
-      {%- endfor -%}
+    {%- if collection == blank -%}
+      {%- assign collection = collections['all'] -%}
     {%- endif -%}
+    
+    {%- for product in collection.products limit: 4 -%}
+      <div class="product-card">
+        <a href="{{ product.url }}">
+          {%- if product.featured_image != blank -%}
+            <img class="product-image" src="{{ product.featured_image | img_url: '400x400', crop: 'center' }}" alt="{{ product.title | escape }}">
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'product-image' }}
+          {%- endif -%}
+          <h3 class="product-title">{{ product.title }}</h3>
+          <div class="product-price">{{ product.price | money }}</div>
+        </a>
+      </div>
+    {%- endfor -%}
   </div>
 </div>
 
@@ -43,7 +37,7 @@
     {
       "type": "collection",
       "id": "collection",
-      "label": "Select Collection"
+      "label": "Select Collection (Defaults to All Products)"
     }
   ],
   "presets": [

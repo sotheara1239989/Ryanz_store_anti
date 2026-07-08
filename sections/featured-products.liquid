@@ -1,0 +1,26 @@
+<div class="featured-products">
+  <div class="section-header">
+    <h2>Latest Drops</h2>
+  </div>
+  <div class="product-grid">
+    {% for i in (1..4) %}
+    <div class="product-card">
+      <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="Product Image">
+      <h3 class="product-title">Neon Sync Jacket</h3>
+      <div class="product-price">$249.00</div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Featured Products",
+  "settings": [],
+  "presets": [
+    {
+      "name": "Default Featured Products"
+    }
+  ]
+}
+{% endschema %}

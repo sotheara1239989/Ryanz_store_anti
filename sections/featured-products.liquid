@@ -1,22 +1,51 @@
 <div class="featured-products">
   <div class="section-header">
-    <h2>Latest Drops</h2>
+    <h2>{{ section.settings.title | default: 'Latest Drops' }}</h2>
   </div>
   <div class="product-grid">
-    {% for i in (1..4) %}
-    <div class="product-card">
-      <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="Product Image">
-      <h3 class="product-title">Neon Sync Jacket</h3>
-      <div class="product-price">$249.00</div>
-    </div>
-    {% endfor %}
+    {%- assign collection = collections[section.settings.collection] -%}
+    {%- if collection != blank and collection.products_count > 0 -%}
+      {%- for product in collection.products limit: 4 -%}
+        <div class="product-card">
+          <a href="{{ product.url }}">
+            {%- if product.featured_image != blank -%}
+              <img class="product-image" src="{{ product.featured_image | img_url: '400x400', crop: 'center' }}" alt="{{ product.title | escape }}">
+            {%- else -%}
+              <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="{{ product.title | escape }}">
+            {%- endif -%}
+            <h3 class="product-title">{{ product.title }}</h3>
+            <div class="product-price">{{ product.price | money }}</div>
+          </a>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <div class="product-card">
+          <img class="product-image" src="{{ 'product-ph.jpg' | asset_url }}" alt="Product Image">
+          <h3 class="product-title">Neon Sync Jacket</h3>
+          <div class="product-price">$249.00</div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
   </div>
 </div>
 
 {% schema %}
 {
   "name": "Featured Products",
-  "settings": [],
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "Latest Drops"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Select Collection"
+    }
+  ],
   "presets": [
     {
       "name": "Default Featured Products"
